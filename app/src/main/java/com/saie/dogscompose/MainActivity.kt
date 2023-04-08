@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.saie.dogscompose.ui.theme.DogsComposeTheme
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
-    Log.d("Prajnan", BuildConfig.DogsApiKey)
+    Timber.d("Prajnan", BuildConfig.DogsApiKey)
 }
 
 @Preview(showBackground = true)
