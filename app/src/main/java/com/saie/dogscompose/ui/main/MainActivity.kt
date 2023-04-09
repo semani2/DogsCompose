@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
@@ -48,7 +51,7 @@ fun App(
             color = MaterialTheme.colors.background
         ) {
             val dogBreeds by mainViewModel.breedList.collectAsState(initial = emptyList())
-            LazyColumn {
+            LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 200.dp)) {
                 items(dogBreeds) { breed ->
                     Breed(breed)
                 }
@@ -61,7 +64,8 @@ fun App(
 fun Breed(breed: Breed) {
     Card (
         backgroundColor = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 8.dp)
             .width(200.dp)
             .height(250.dp)
     ) {
@@ -80,7 +84,8 @@ fun CardContent(breed: Breed) {
             model = "https://cdn2.thedogapi.com/images/${breed.imageId}.jpg",
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape)
+            modifier = Modifier
+                .clip(CircleShape)
                 .width(150.dp)
                 .height(150.dp),
             onError = { Timber.e(it.toString()) }
