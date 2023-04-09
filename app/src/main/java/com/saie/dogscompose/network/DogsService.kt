@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface DogsService {
 
     @GET("v1/breeds")
-    suspend fun fetchBreeds(@Query("limit") limit: Int, @Query("page") page: Int):
+    suspend fun fetchBreeds(@Query("limit") limit: Int = 100, @Query("page") page: Int = 0):
             ApiResponse<List<Breed>>
 }
