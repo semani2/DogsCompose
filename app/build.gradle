@@ -95,6 +95,7 @@ dependencies {
     implementation "com.github.skydoves:landscapist-animation:2.1.2"
     implementation "com.github.skydoves:landscapist-placeholder:2.1.2"
     implementation "com.github.skydoves:landscapist-palette:2.1.2"
+    implementation("io.coil-kt:coil-compose:2.3.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

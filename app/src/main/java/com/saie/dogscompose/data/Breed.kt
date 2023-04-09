@@ -1,13 +1,13 @@
 package com.saie.dogscompose.data
 
 import androidx.compose.runtime.Immutable
+import com.google.gson.annotations.SerializedName
 
 @Immutable
 data class Breed(
     val id: Int,
     val name: String,
-    val imageId: String,
-    val countryCode: String,
+    @SerializedName("reference_image_id") val imageId: String,
     val origin: String,
-    val lifeSpan: String
+    @SerializedName("life_span")val lifeSpan: String
 )
