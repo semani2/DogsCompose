@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DogsCompose</string>
+    <string name="database">DogsCompose.db</string>
 </resources>
