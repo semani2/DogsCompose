@@ -37,6 +37,7 @@ import com.saie.dogscompose.ui.theme.DogsComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import androidx.compose.foundation.rememberScrollState
+import com.saie.dogscompose.ui.detail.DetailViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -78,7 +79,7 @@ fun App(
 
             BreedDetails(
                 breedId = breedId,
-                viewModel = mainViewModel
+                viewModel = hiltViewModel()
             ) {
                 navController.navigateUp()
             }
@@ -147,7 +148,7 @@ fun CardContent(breed: Breed) {
 
 @Composable
 fun BreedDetails(breedId: Int,
-                 viewModel: MainViewModel,
+                 viewModel: DetailViewModel,
                  pressOnBack: () -> Unit = {}
 ) {
     Column(
@@ -156,7 +157,15 @@ fun BreedDetails(breedId: Int,
             .background(MaterialTheme.colors.background)
             .fillMaxHeight()
     ) {
-        Text(text = breedId.toString())
+        LaunchedEffect(key1 = breedId) {
+            viewModel.loadBreedById(breedId)
+        }
+
+        val breed by viewModel.breedDetailFlow.collectAsState(initial = null)
+
+        breed?.let { breed ->
+            Text(text = breed.name)
+        }
     }
 }
 
