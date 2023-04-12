@@ -3,14 +3,13 @@ package com.saie.dogscompose.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -36,7 +35,6 @@ import com.saie.dogscompose.data.Breed
 import com.saie.dogscompose.ui.theme.DogsComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import androidx.compose.foundation.rememberScrollState
 import com.saie.dogscompose.ui.detail.DetailViewModel
 
 @AndroidEntryPoint
@@ -151,20 +149,72 @@ fun BreedDetails(breedId: Int,
                  viewModel: DetailViewModel,
                  pressOnBack: () -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colors.background)
-            .fillMaxHeight()
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
     ) {
-        LaunchedEffect(key1 = breedId) {
-            viewModel.loadBreedById(breedId)
-        }
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colors.background)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            LaunchedEffect(key1 = breedId) {
+                viewModel.loadBreedById(breedId)
+            }
 
-        val breed by viewModel.breedDetailFlow.collectAsState(initial = null)
+            val breed by viewModel.breedDetailFlow.collectAsState(initial = null)
 
-        breed?.let { breed ->
-            Text(text = breed.name)
+            breed?.let { it ->
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+
+                ) {
+                    AsyncImage(
+                        model = "https://cdn2.thedogapi.com/images/${it.imageId}.jpg",
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(350.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                        onError = { Timber.e(it.toString()) }
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = it.name
+                    )
+
+                    if (it.origin != null && it.origin.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier.padding(top = 16.dp)
+                        ) {
+                            Text(
+                                text = "Origin: "
+                            )
+
+                            Text(modifier = Modifier.padding(start = 2.dp), text = it.origin)
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
+                        Text(
+                            text = "Life span: "
+                        )
+
+                        Text(
+                            modifier = Modifier.padding(start = 2.dp),
+                            text = it.lifeSpan
+                        )
+                    }
+
+                }
+            }
         }
     }
 }
