@@ -109,7 +109,7 @@ fun Breeds(
 @Composable
 fun Breed(breed: Breed, selectBreed: (Int) -> Unit) {
     Card (
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colors.surface,
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .width(200.dp)
