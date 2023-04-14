@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">DogsCompose</string>
     <string name="database">DogsCompose.db</string>
+
+    <string name="title">Your best friends</string>
+    <string name="caption">\"Dogs do speak, but only to those who know how to listen\"</string>
 </resources>
