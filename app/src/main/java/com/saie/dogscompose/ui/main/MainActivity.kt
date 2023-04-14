@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -139,7 +140,9 @@ fun CardContent(breed: Breed) {
         )
         Text(
             modifier = Modifier.padding(top = 16.dp),
-            text = breed.name
+            text = breed.name,
+            style = MaterialTheme.typography.h3,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -149,70 +152,79 @@ fun BreedDetails(breedId: Int,
                  viewModel: DetailViewModel,
                  pressOnBack: () -> Unit = {}
 ) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
-    ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colors.background)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    DogsComposeTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
         ) {
-            LaunchedEffect(key1 = breedId) {
-                viewModel.loadBreedById(breedId)
-            }
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                LaunchedEffect(key1 = breedId) {
+                    viewModel.loadBreedById(breedId)
+                }
 
-            val breed by viewModel.breedDetailFlow.collectAsState(initial = null)
+                val breed by viewModel.breedDetailFlow.collectAsState(initial = null)
 
-            breed?.let { it ->
-                Column(
-                    modifier = Modifier.padding(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                breed?.let { it ->
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
 
-                ) {
-                    AsyncImage(
-                        model = "https://cdn2.thedogapi.com/images/${it.imageId}.jpg",
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(350.dp)
-                            .clip(RoundedCornerShape(10.dp)),
-                        onError = { Timber.e(it.toString()) }
-                    )
-                    Text(
-                        modifier = Modifier.padding(top = 16.dp),
-                        text = it.name
-                    )
+                        ) {
+                        AsyncImage(
+                            model = "https://cdn2.thedogapi.com/images/${it.imageId}.jpg",
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(350.dp)
+                                .clip(RoundedCornerShape(10.dp)),
+                            onError = { Timber.e(it.toString()) }
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 16.dp),
+                            text = it.name,
+                            style = MaterialTheme.typography.h2
+                        )
 
-                    if (it.origin != null && it.origin.isNotEmpty()) {
+                        if (it.origin != null && it.origin.isNotEmpty()) {
+                            Row(
+                                modifier = Modifier.padding(top = 16.dp)
+                            ) {
+                                Text(
+                                    text = "Origin: ",
+                                    style = MaterialTheme.typography.body1
+                                )
+
+                                Text(
+                                    modifier = Modifier.padding(start = 2.dp),
+                                    text = it.origin,
+                                    style = MaterialTheme.typography.body2
+                                )
+                            }
+                        }
+
                         Row(
                             modifier = Modifier.padding(top = 16.dp)
                         ) {
                             Text(
-                                text = "Origin: "
+                                text = "Life span: ",
+                                style = MaterialTheme.typography.body1
                             )
 
-                            Text(modifier = Modifier.padding(start = 2.dp), text = it.origin)
+                            Text(
+                                modifier = Modifier.padding(start = 2.dp),
+                                text = it.lifeSpan,
+                                style = MaterialTheme.typography.body2
+                            )
                         }
+
                     }
-
-                    Row(
-                        modifier = Modifier.padding(top = 16.dp)
-                    ) {
-                        Text(
-                            text = "Life span: "
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(start = 2.dp),
-                            text = it.lifeSpan
-                        )
-                    }
-
                 }
             }
         }

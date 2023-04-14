@@ -6,16 +6,14 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = Amber500,
     primaryVariant = Amber700,
-    background = Color.White,
-    surface = Amber200,
+    background = Amber200,
+    surface = Amber500,
     secondary = Brown200,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onSurface = Brown200
 )
 
 private val LightColorPalette = lightColors(
@@ -40,10 +38,21 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun DogsComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val systemUiController = rememberSystemUiController()
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
+    }
+
+    if (darkTheme) {
+        systemUiController.setSystemBarsColor(
+            color = Brown200
+        )
+    } else {
+        systemUiController.setSystemBarsColor(
+            color = Amber700
+        )
     }
 
     MaterialTheme(
